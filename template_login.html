@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html style="height: 100%; margin: 0;">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<title>@label_title_login</title>
+<link rel="shortcut icon" href="@img_favicon" />
+@Html.Raw(css_theme_link)
+@Html.Raw(css_style)
+<!--[if lte IE 8]>
+@Html.Raw(css_ie8_style)
+<![endif]--> 
+<style id="antiClickjack" type="text/css">body { display: none !important; }</style>
+@Html.Raw(sys_script_generated)
+<script src="@script_included"></script>
+@Html.Raw(custom_script)
+<script>
+(function () {
+    var needActivation = true;
+    function frameActivate() {
+        var antiClickjack = document.getElementById("antiClickjack");
+        if (antiClickjack) {
+            antiClickjack.parentNode.removeChild(antiClickjack);
+        }
+    }
+    function registerHandler() {
+        if (window.addEventListener) {
+            window.addEventListener("message", handleMessage);
+        }
+        else if (window.attachEvent) {
+            window.attachEvent("onmessage", handleMessage);
+        }
+    }
+    function unregisterHandler() {
+        if (window.removeEventListener) {
+            window.removeEventListener("message", handleMessage);
+        }
+        else if (window.detachEvent) {
+            window.detachEvent("onmessage", handleMessage);
+        }
+    }
+    function handleMessage(event) {
+        var origin = window.location.protocol + "//" + window.location.host;
+        if (event.source && (event.source !== window.parent)) {
+            return;
+        }
+        if (event.origin === origin) {
+            frameActivate();
+            unregisterHandler();
+        }
+    }
+    try {
+        if ((top === self) || (top.location.href)) {
+            needActivation = false;
+            frameActivate();
+        }
+    }
+    catch (e) {
+    }
+    if (needActivation) {
+        registerHandler();
+        // Portal support: hosting page has same origin but performed domain relaxation
+        window.parent.postMessage("ClickJackProt:", "*");
+        window.parent.postMessage("SAPFramingControl:", "*");
+    }
+}());
+</script>
+</head>
+<body class="sapUiBody sapUiSraLoginSplashScreen" style="direction: @sys_text_direction;">
+<div id="LOGIN_PAGE" class="sapUiSraLoginView sapMPage @sys_login_height_class" onload="@sys_icf_cookie_check ()">
+<div class="sapUiSraBrandingBar sapThemeBrand-asBackgroundColor"></div>
+<div class="sapUiSraHeader" @Html.Raw(sys_header_state)><div class="sapUiSraTitle">@header_title</div><div class="sapUiSraSubTitle">@header_subtitle</div></div>
+<div class="sapUiSraFooter"><div class="sapUiSraLoginLogo"><img src="@img_logo" width="@img_logo_width" /></div><div class="sapUiSraLoginCopyright">@Html.Raw(label_copyright)</div></div>
+<div class="sapUiSraLoginPage" id="LOGIN_PAGE_FULL">
+<form class="sapUiSraLoginForm" id="LOGIN_FORM" name="loginForm" action="@sys_form_action" method="post" autocomplete="@sys_autocomplete">
+@Html.Raw(sys_form_hidden_fields)
+		<!-- in case of inline-block display spaces matter! -->
+		<div class="sapUiSraLoginInputBlock">
+			<div id="USERNAME_BLOCK" class="sapMBar sapMPanelBG sapMPanelBGTranslucent sapUiSraLoginHidden" onclick="fioriLogin.setInputFocus('USERNAME_FIELD-inner')"><label id="USERNAME_LABEL" for="USERNAME_FIELD-inner" class="sapMLabel" onclick="fioriLogin.setInputFocus('USERNAME_FIELD-inner')">@label_user</label><div id="USERNAME_FIELD" class="sapMInputBase"><input id="USERNAME_FIELD-inner" tabindex="1" type="text" class="sapMInputBaseInner" name="@sys_form_param_user" maxlength="@sys_form_user_maxlen" inputmode="verbatim" autocorrect="off" autocapitalize="none" /></div></div>
+			<div id="PASSWORD_BLOCK" class="sapMBar sapMPanelBG sapMPanelBGTranslucent sapUiSraLoginHidden" onclick="fioriLogin.setInputFocus('PASSWORD_FIELD-inner')"><label id="PASSWORD_LABEL" for="PASSWORD_FIELD-inner" class="sapMLabel" onclick="fioriLogin.setInputFocus('PASSWORD_FIELD-inner')">@label_password</label><div id="PASSWORD_FIELD" class="sapMInputBase"><input id="PASSWORD_FIELD-inner" tabindex="2" type="password" class="sapMInputBaseInner" name="@sys_form_param_password" inputmode="verbatim" /></div></div>
+			<div id="LANGUAGE_BLOCK" class="sapMBar sapMPanelBG sapMPanelBGTranslucent sapUiSraLoginHidden" @Html.Raw(sys_form_lang_state)><label id="LANGUAGE_LABEL" for="LANGUAGE_SELECT" class="sapMLabel">@label_language</label><div id="LANGUAGE_SELECT_BLOCK" class="sapMInputBase sapUiSraSelectBlock"><select id="LANGUAGE_SELECT" tabindex="3" class="sapMInputBaseInner sapUiSraSelect"></select></div></div>
+			<div id="CLIENT_BLOCK" class="sapMBar sapMPanelBG sapMPanelBGTranslucent sapUiSraLoginHidden" @Html.Raw(sys_form_client_state) onclick="fioriLogin.setInputFocus('CLIENT_FIELD-inner')"><label id="CLIENT_LABEL" for="CLIENT_FIELD-inner" class="sapMLabel" onclick="fioriLogin.setInputFocus('CLIENT_FIELD-inner')">@label_client</label><div id="CLIENT_FIELD" class="sapMInputBase"><input id="CLIENT_FIELD-inner" tabindex="4" type="text" value="@sys_form_default_client" maxlength="3" size="3" class="sapMInputBaseInner" name="@sys_form_param_client" inputmode="verbatim" /></div></div>
+		</div>
+		<div class="sapUiSraMessageContainer"><div id="LOGIN_ERROR_BLOCK" tabindex="5" class="sapMBar sapUiSraMessage sapUiSraMessageError" @Html.Raw(sys_messages_state) ><label id="LOGIN_LBL_ERROR" class="sapThemeText">@Html.Raw(sys_messages_text)</label></div></div>
+		<div class="sapUiSraLoginButtonBlock">
+            <div class="sapUiSraBtnBlock sapUiSraLoginBtnBlock sapThemeBrand-asBackgroundColor">
+                <button type="submit" id="LOGIN_LINK" tabindex="6" class="sapMBtn sapMBtnEmphasized" 
+                  onclick="return fioriLogin.submitLogin('@sys_form_input_processing', '@sys_form_event_login')" >
+                  <div class="sapUiSraLogonAnimation" id="sapUiSraFlower">
+                    <div class="sapUiSraFlowerBlossom">
+                      <div class="sapUiSraFlowerLeafContainer sapUiSraFlowerLeafContainer1"><div class="sapUiSraFlowerLeaf sapUiSraFlowerLeaf1"></div></div>
+                      <div class="sapUiSraFlowerLeafContainer sapUiSraFlowerLeafContainer2"><div class="sapUiSraFlowerLeaf sapUiSraFlowerLeaf2"></div></div>
+                      <div class="sapUiSraFlowerLeafContainer sapUiSraFlowerLeafContainer3"><div class="sapUiSraFlowerLeaf sapUiSraFlowerLeaf3"></div></div>
+                      <div class="sapUiSraFlowerLeafContainer sapUiSraFlowerLeafContainer4"><div class="sapUiSraFlowerLeaf sapUiSraFlowerLeaf4"></div></div>
+                      <div class="sapUiSraFlowerLeafContainer sapUiSraFlowerLeafContainer5"><div class="sapUiSraFlowerLeaf sapUiSraFlowerLeaf5"></div></div>
+                   </div>
+                 </div>
+                 <span class="sapMBtnContent sapMLabelBold sapUiSraDisplayBeforeLogin">@label_button_login</span>
+                 <span class="sapMBtnContent sapMLabelBold sapUiSraDisplayAfterLogin">@label_button_login_loading</span>
+               </button>
+			       </div>
+
+            <div class="sapUiSraBtnBlock sapUiSraLoginHidden sapThemeBarBG">
+              <button type="button" id="CHANGE_PASSWORD_LINK" tabindex="7" class="sapMBtn sapMBtnDefault" 
+                    onclick="fioriLogin.submitLogin('@sys_form_input_processing', '@sys_form_event_changepwd', true)">
+                <span class="sapMBtnContent sapMLabelBold">@label_change_password</span>
+              </button>
+		        </div>
+
+            <div class="sapUiSraBtnBlock sapUiSraLoginHidden sapThemeBarBG">
+              <button type="button" id="LOGIN_FORGOT_PASSWORD_LINK" tabindex="8" class="sapMBtn sapMBtnDefault" 
+                  onclick="location.href = '@url_forgot_password';">
+                <span class="sapMBtnContent sapMLabelBold">@label_forgot_password</span>
+              </button>
+            </div>
+
+        </div>
+
+	</form>
+</div>
+</div>
+<script>setTimeout(function () { document.body.className = "sapUiBody"; }, 50);</script>
+
+</body>
+</html>
