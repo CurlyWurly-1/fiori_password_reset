@@ -1,6 +1,10 @@
 # Fiori Password Reset (fiori_password_reset)
+
+This version has been amended to use type "SYST_SUBRC" and also sysid "NPL".
+
+It is suitable for 7.52 SAP systems which use "/UI2/CL_SRA_LOGIN"
+
 Adds a button to the Fiori Login Screen to allow a user to change their password if they've forgotten it.
-This version has been amended to use type "SYST_SUBRC" and also sysid "NPL"
 
 ![Image of Logon Screen](img/fiori_logon_screen.png)
 
